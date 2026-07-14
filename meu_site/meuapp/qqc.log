@@ -1,0 +1,5 @@
+[10/Jul/2026 14:41:47] "POST /admin/meuapp/aluno/add/ HTTP/1.1" 302 0 <- dados do formulario enviado ao banco
+[10/Jul/2026 14:41:47] "GET /admin/meuapp/aluno/111111/change/ HTTP/1.1" 200 11569 <- sucesso || 
+                    select * from aluno where ra = "111111";
+[10/Jul/2026 14:41:47] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[10/Jul/2026 14:41:47] "GET /static/admin/img/icon-yes-dark.svg HTTP/1.1" 304 0

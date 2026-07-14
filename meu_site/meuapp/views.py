@@ -1,0 +1,47 @@
+import logging
+from django.shortcuts import render
+from django.views import View
+from django.http import HttpResponse
+from django.http import JsonResponse
+from django.shortcuts import render, redirect
+from .models import Aluno
+
+logger = logging.getLogger(__name__)
+
+
+# Create your views here.
+def ola_mundo(request):
+    return HttpResponse("<h1>olaaaaaaaaaaa</h1>" \
+    "<br><br><br>" \
+    "console.log('teste123')"
+    "<h2>mundo</h2>")
+
+def lista_alunos(request):
+    dados={
+        'ra':'11111',
+        'nome':'Gabriel',
+        'nascimento':'1997-07-08'
+    }
+    return JsonResponse(dados)
+
+
+class AlunoView(View):
+    def get(self, request):
+        # Renderiza a tela com a lista de aluno
+        aluno = Aluno.objects.all()
+        return render(request, 'aluno/cadastro.html', {'aluno': aluno})
+
+    def post(self, request):
+        # Captura e salva os dados
+        aluno = Aluno.objects.all()
+        # logger.info(aluno)
+        ra = request.POST.get('ra')
+        nome = request.POST.get('nome')
+        nascimento = request.POST.get('nascimento')
+        logger.info(f"Aluno criado com os dados {ra} | {nome} | {nascimento}")
+        if ra and nome and nascimento:
+            Aluno.objects.create(RA=ra, nome=nome, nascimento=nascimento)
+            
+        return render(request, 'aluno/cadastro.html', {'aluno': aluno})
+
+
