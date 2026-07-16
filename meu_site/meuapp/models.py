@@ -14,8 +14,8 @@ class Aluno(models.Model):
         verbose_name_plural = "Alunos"
 class Curso(models.Model):
     codigo = models.IntegerField(verbose_name="Digite o codigo!", primary_key=True)
-    nomecurso =  models.CharField(verbose_name="Digite o nome do curso")
-    cargarHoraria = models.DateTimeField(verbose_name='Digite a carga horária do curso')
+    nomecurso =  models.CharField(max_length=100,verbose_name="Digite o nome do curso")
+    cargarHoraria = models.IntegerField(verbose_name='Digite a carga horária do curso')
     datainicio =  models.DateField(verbose_name='Digite ínicio')
     dataTermino=   models.DateField(verbose_name='Digite Término')     
 

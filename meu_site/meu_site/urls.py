@@ -17,11 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from meuapp import views
-from meuapp.views import AlunoView
+from meuapp.views import AlunoView , CursoView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('ola/', views.ola_mundo, name='ola_mundo'),
     path('aluno/', AlunoView.as_view(), name='lista de alunos'),
-    path('lista_alunos', views.lista_alunos)
+    path('lista_alunos', views.lista_alunos),
+    path("cadastro-curso/",CursoView.as_view(),name="cadastro_curso")
 ]

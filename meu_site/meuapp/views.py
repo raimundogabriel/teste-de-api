@@ -4,7 +4,7 @@ from django.views import View
 from django.http import HttpResponse
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
-from .models import Aluno
+from .models import Aluno,Curso
 
 logger = logging.getLogger(__name__)
 
@@ -40,8 +40,31 @@ class AlunoView(View):
         nascimento = request.POST.get('nascimento')
         logger.info(f"Aluno criado com os dados {ra} | {nome} | {nascimento}")
         if ra and nome and nascimento:
-            Aluno.objects.create(RA=ra, nome=nome, nascimento=nascimento)
+            Aluno.objects.create(ra=ra,nome=nome,nascimento=nascimento)
             
         return render(request, 'aluno/cadastro.html', {'aluno': aluno})
 
 
+
+class CursoView(View):
+    def get(self,request):
+        curso = Curso.objects.all()
+        return render(request, 'aluno/cadastro_curso.html', {'curso': curso})
+
+
+    def post(self,request):
+        curso = Curso.objects.all()
+        codigo = request.POST.get('codigo')
+        nomecurso = request.POST.get('nomecurso')
+        cargarHoraria = request.POST.get('cargarHoraria')
+        datainicio = request.POST.get('datainicio')
+        dataTermino = request.POST.get('dataTermino')
+
+        logger.info(
+            f"Curso criado: {codigo} | {nomecurso} | {cargarHoraria} | {datainicio} | {dataTermino}")
+        
+
+        if (codigo and nomecurso and cargarHoraria and datainicio and dataTermino):
+            Curso.objects.create(codigo=codigo,nomecurso=nomecurso,cargarHoraria=cargarHoraria,datainicio=datainicio,dataTermino=dataTermino)
+
+        return render(request, 'aluno/cadastro_curso.html' , {'curso': curso})
