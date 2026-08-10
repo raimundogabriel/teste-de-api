@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from .models import Aluno,Curso
+from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
@@ -47,18 +48,45 @@ class AlunoView(View):
 
 
 class CursoView(View):
+    def checa_data(data1,data2,request,curso):
+            data_1_check = datetime.strptime(data1, "%Y-%m-%d")
+            data_2_check = datetime.strptime(data2, "%Y-%m-%d")
+    
+            if data_1_check > data_2_check:
+                logger.error("DATA IMPOSSIVEL. data de fim menor que data de inicio")
+                return render(request, 'aluno/cadastro_curso.html' , {'curso': curso})
+
     def get(self,request):
         curso = Curso.objects.all()
         return render(request, 'aluno/cadastro_curso.html', {'curso': curso})
 
+    
 
     def post(self,request):
+        #separar os campos 
+        #dados={
+            #     'codigo':'11111',
+            #     'nomecurso':'backend',
+            #     'cargaHoraria':'180',
+            #     'datainicio':'2026-08-31',
+            #     'dataTermino':'2026-08-01' 
+            # }
+            #
         curso = Curso.objects.all()
         codigo = request.POST.get('codigo')
         nomecurso = request.POST.get('nomecurso')
         cargarHoraria = request.POST.get('cargarHoraria')
         datainicio = request.POST.get('datainicio')
         dataTermino = request.POST.get('dataTermino')
+
+        #verificar se as datas são validas - datainicio < dataTermino
+        CursoView.checa_data(datainicio,dataTermino,request,curso)
+        # data_1_check = datetime.strptime(datainicio, "%Y-%m-%d")
+        # data_2_check = datetime.strptime(dataTermino, "%Y-%m-%d")
+
+        # if data_1_check > data_2_check:
+        #     logger.error("DATA IMPOSSIVEL. data de fim menor que data de inicio")
+        #     return render(request, 'aluno/cadastro_curso.html' , {'curso': curso})
 
         logger.info(
             f"Curso criado: {codigo} | {nomecurso} | {cargarHoraria} | {datainicio} | {dataTermino}")
@@ -68,3 +96,5 @@ class CursoView(View):
             Curso.objects.create(codigo=codigo,nomecurso=nomecurso,cargarHoraria=cargarHoraria,datainicio=datainicio,dataTermino=dataTermino)
 
         return render(request, 'aluno/cadastro_curso.html' , {'curso': curso})
+
+    
